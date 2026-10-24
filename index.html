@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>山海莫怪 Roadshow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d0b09;--paper:#efe3c8;--gold:#d8b46a;--red:#b8321f;--mute:#b9ab8f}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body{font-family:"Noto Serif SC","STKaiti","KaiTi","SimSun",serif;color:var(--paper)}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--ink)}
+.slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .7s ease;overflow:hidden}
+.slide.on{opacity:1;pointer-events:auto}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04);transition:transform 9s ease-out}
+.slide.on .bg{transform:scale(1)}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,9,.35) 0%,rgba(13,11,9,.15) 40%,rgba(13,11,9,.85) 100%)}
+.shade.left{background:linear-gradient(90deg,rgba(13,11,9,.92) 0%,rgba(13,11,9,.75) 38%,rgba(13,11,9,.1) 70%)}
+.shade.full{background:rgba(13,11,9,.62)}
+.seal{position:absolute;left:70px;top:56px;width:76px;height:76px;border:3px solid var(--red);color:var(--red);font-size:48px;font-weight:900;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(239,227,200,.06)}
+.crit{position:absolute;right:70px;top:66px;font-size:24px;letter-spacing:.3em;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:6px}
+.crit i{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;letter-spacing:.08em;margin-left:14px;color:var(--mute)}
+.zh{font-weight:900;line-height:1.25;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.en{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:500;color:var(--gold);text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 160px}
+.bottom{position:absolute;left:0;right:0;bottom:110px;text-align:center;padding:0 160px}
+.leftcol{position:absolute;left:150px;top:0;bottom:0;width:820px;display:flex;flex-direction:column;justify-content:center}
+.h1{font-size:150px;letter-spacing:.12em}
+.h2{font-size:84px}
+.h3{font-size:62px}
+.e1{font-size:56px;margin-top:18px}
+.e2{font-size:42px;margin-top:14px}
+.small{font-size:30px;color:var(--paper);opacity:.85;margin-top:30px;line-height:1.6}
+.small .en{font-size:28px}
+.rule{width:120px;height:3px;background:var(--red);margin:34px auto}
+.leftcol .rule{margin:30px 0}
+.pill{display:inline-block;border:1px solid var(--gold);color:var(--gold);border-radius:40px;padding:10px 28px;font-size:28px;margin:8px 10px 0 0}
+.strip{position:absolute;left:110px;right:110px;top:300px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.strip figure{position:relative;border-radius:14px;overflow:hidden;height:470px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.strip img{width:100%;height:100%;object-fit:cover}
+.strip figcaption{position:absolute;left:0;right:0;bottom:0;padding:70px 22px 22px;background:linear-gradient(0deg,rgba(0,0,0,.9),transparent)}
+.strip figcaption b{display:block;font-size:40px}
+.strip figcaption span{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;color:var(--gold);font-size:28px}
+.strip .n{position:absolute;left:18px;top:14px;font-size:30px;color:var(--gold);font-weight:700}
+.choice{display:flex;gap:30px;margin-top:40px}
+.btn{border:2px solid var(--gold);border-radius:18px;padding:22px 34px;font-size:40px;background:rgba(13,11,9,.6);min-width:330px}
+.btn small{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;color:var(--mute);font-size:28px;margin-top:4px}
+.btn.hot{background:var(--red);border-color:var(--red)}
+.btn.hot small{color:#f3d9c9}
+.quote{font-size:40px;line-height:1.5;margin-top:34px;padding-left:28px;border-left:4px solid var(--red)}
+.quote .en{display:block;font-size:32px;margin-top:6px}
+.vid{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:1440px;height:810px;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7);background:#000}
+.vid video{width:100%;height:100%;object-fit:cover}
+.vcap{position:absolute;left:0;right:0;bottom:44px;text-align:center}
+.pair{position:absolute;right:120px;top:210px;width:760px;display:grid;gap:26px}
+.pair figure{position:relative;height:300px;border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.pair img,.pair video{width:100%;height:100%;object-fit:cover}
+.pair figcaption{position:absolute;left:16px;top:12px;font-size:26px;background:rgba(13,11,9,.75);padding:6px 16px;border-radius:30px}
+.pair figcaption.bad{color:#ff9f8a}
+.pair figcaption.good{color:#bfe6a8}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+.cell{border:1px solid rgba(216,180,106,.5);border-radius:16px;padding:22px 24px;background:rgba(13,11,9,.55)}
+.cell b{font-size:36px;display:block}
+.cell .en{font-size:26px;display:block;margin-top:6px}
+.steps{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap}
+.step{border:1px solid rgba(216,180,106,.6);border-radius:14px;padding:16px 20px;font-size:28px;background:rgba(13,11,9,.6);width:240px}
+.step .en{display:block;font-size:22px;margin-top:4px}
+.step em{font-style:normal;color:var(--red);font-weight:900;margin-right:8px}
+#hud{position:fixed;right:18px;bottom:14px;font:14px "Segoe UI",sans-serif;color:#8d826f;z-index:5;user-select:none}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:44vh;overflow:auto;background:rgba(10,9,8,.96);border-top:2px solid var(--red);padding:18px 26px 26px;font:17px/1.6 "Segoe UI","Microsoft YaHei",sans-serif;color:#eee;display:none;z-index:6}
+#notes.on{display:block}
+#notes h4{color:var(--gold);font-size:15px;letter-spacing:.08em;margin:10px 0 4px}
+#notes .t{float:right;color:#aaa}
+#notes p{margin:2px 0 6px}
+#notes .gloss{color:#9a917f;font-size:15px}
+.navhint{position:fixed;left:18px;bottom:14px;font:13px "Segoe UI",sans-serif;color:#5d554a;z-index:5}
+.party{position:absolute;left:110px;right:110px;top:330px;display:flex;align-items:center;gap:18px}
+.party figure{position:relative;flex:1;height:440px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.party img{width:100%;height:100%;object-fit:cover}
+.party figcaption{position:absolute;left:0;right:0;bottom:0;padding:60px 20px 18px;background:linear-gradient(0deg,rgba(0,0,0,.92),transparent)}
+.party figcaption b{display:block;font-size:40px}
+.party figcaption span{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;color:var(--gold);font-size:26px}
+.party .arrow{font-size:64px;color:var(--red);font-weight:900}
+.branch{position:absolute;left:110px;right:110px;bottom:90px;font-size:32px;text-align:center}
+.branch b{color:var(--red);margin-right:14px}
+.branch .en{display:block;font-size:26px;margin-top:6px}
+.typebox{margin-top:30px;border:2px solid var(--gold);border-radius:14px;padding:18px 22px;background:rgba(13,11,9,.7);font-family:"Segoe UI",sans-serif;font-size:28px;color:#fff}
+.typebox .cur::after{content:"|";color:var(--gold);margin-left:4px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.flow3{display:grid;gap:14px;margin-top:22px}
+.fstep{border:1px solid rgba(216,180,106,.6);border-radius:14px;padding:12px 18px;background:rgba(13,11,9,.6);font-size:28px;position:relative}
+.fstep em{font-style:normal;color:var(--red);font-weight:900;margin-right:10px}
+.fstep .en{display:block;font-size:22px}
+.meter{position:absolute;right:18px;top:50%;transform:translateY(-50%);width:200px;height:16px;border-radius:9px;background:rgba(255,255,255,.15)}
+.meter i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--red),var(--gold))}
+.meter b{position:absolute;right:0;top:-34px;font-size:24px;color:var(--gold)}
+.two{position:absolute;left:110px;right:110px;top:330px;display:grid;grid-template-columns:1fr 1.5fr;gap:40px}
+.col{display:grid;gap:14px;align-content:start}
+.colh{font-size:38px;font-weight:900;margin-bottom:6px}
+.colh .en{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;color:var(--gold);font-size:28px;font-weight:500;margin-left:10px}
+.cell.sm{padding:14px 20px}.cell.sm b{font-size:28px}.cell.sm .en{font-size:22px}
+.tags{display:flex;flex-wrap:wrap;gap:12px}
+.tag{border:1px solid rgba(216,180,106,.6);border-radius:30px;padding:10px 20px;font-size:26px;background:rgba(13,11,9,.6)}
+.tag i{font-family:"Cormorant Garamond",Georgia,serif;color:var(--gold);font-size:22px;margin-left:8px}
+.evid{margin-top:22px;font-size:24px;color:var(--mute)}.evid .en{display:block;font-size:20px}
+.ch2{position:absolute;left:110px;right:110px;top:330px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.ch2 figure{position:relative;height:430px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.ch2 img,.ch2 video{width:100%;height:100%;object-fit:cover}
+.ch2 figcaption{position:absolute;left:0;right:0;bottom:0;padding:60px 20px 18px;background:linear-gradient(0deg,rgba(0,0,0,.92),transparent)}
+.ch2 figcaption b{display:block;font-size:36px}
+.ch2 figcaption span{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;color:var(--gold);font-size:24px}
+#notes .part{margin:8px 0 12px}#notes .who{color:var(--gold);font-weight:700}
+.fnlist{margin-top:18px;display:grid;gap:8px;font-size:24px}.fnlist b{color:var(--red);margin-right:10px}.fnlist .en{font-size:19px;margin-left:8px}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}.shots img{width:100%;height:170px;object-fit:cover;object-position:top left;border-radius:10px;border:1px solid rgba(216,180,106,.5)}.conn{display:flex;gap:18px;align-items:center;margin-top:22px}.conn img{width:330px;border-radius:12px;border:1px solid rgba(216,180,106,.5)}.conn b{font-size:28px;display:block}.conn .en{font-size:22px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 cover -->
+<section class="slide" data-time="0:20">
+  <div class="bg" style="background-image:url(assets/valley.jpg)"></div><div class="shade"></div>
+  <div class="seal">山</div>
+  <div class="center">
+    <div class="zh h1">山海莫怪</div>
+    <div class="en e1">Shan Hai Mo Guai</div>
+    <div class="rule"></div>
+    <div class="zh h3" style="font-weight:700">科技翻开古书，共情走进山海</div>
+    <div class="en e2">Technology opens the book. Empathy walks the mountains.</div>
+    <div class="small">「山」队 · Team Shan · TCAMP × Miora · Track A</div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="大家好，我们是「山」队。我们的作品叫《山海莫怪》。" data-en="Hello everyone, we are Team Shan. Our project is called Shan Hai Mo Guai."></p>
+    <p data-who="Mia" data-en="We turned the Shan Hai Jing into a world you can walk into, with Miora as your guide." data-zh="我们把《山海经》变成了一个可以走进去的世界，由 Miora 带路。"></p>
+  </aside>
+</section>
+
+<!-- 2 the worry -->
+<section class="slide" data-time="0:30">
+  <div class="bg" style="background-image:url(assets/book.jpg)"></div><div class="shade full"></div>
+  <div class="seal">山</div><div class="crit">命题理解<i>The brief</i></div>
+  <div class="center">
+    <div class="zh h2">有了 AI，<br>我们会忘记自己的文化吗？</div>
+    <div class="en e1">With AI, will we forget our own culture?</div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="在中国，很多人担心：有了AI，人会越来越依赖它，慢慢忘记自己的文化，忘记那些古老的东西。" data-en="In China, many people worry that with AI we will depend on it more and more, and slowly forget our culture and the old stories."></p>
+    <p data-who="Mia" data-en="A real fear: AI does the thinking, and the old stories fade away." data-zh="这是一个真实的担忧：AI 替我们思考，古老的故事慢慢消失。"></p>
+  </aside>
+</section>
+
+<!-- 3 our answer -->
+<section class="slide" data-time="0:30">
+  <div class="bg" style="background-image:url(assets/creatures_out.jpg)"></div><div class="shade"></div>
+  <div class="seal">山</div><div class="crit">核心创意<i>Core idea</i></div>
+  <div class="bottom">
+    <div class="zh h2">AI 时代，让文化重新活过来</div>
+    <div class="en e1">Culture comes alive in the age of AI.</div>
+    <div class="rule"></div>
+    <div class="zh h3" style="font-weight:700;color:var(--gold)">Your ideas, Miora delivers.</div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="我们想说的正好相反：在AI时代，文化可以重新活过来。我们选了大家都熟悉的《山海经》，以前它只活在文字和想象里，现在用Miora，可以把它变成看得见、走得进去的世界。" data-en="We say the opposite: in the age of AI, culture can come alive again. We chose the familiar Shan Hai Jing. It used to live only in words and imagination; with Miora it becomes a world you can see and walk into."></p>
+    <p data-who="Mia" data-en="AI is not the end of culture, it is a companion to rediscover it. As Miora says: Your ideas, Miora delivers." data-zh="AI 不是文化的终点，而是重新发现文化的伙伴。正如 Miora 所说：Your ideas, Miora delivers。"></p>
+  </aside>
+</section>
+
+<!-- 4 story in four beats -->
+<section class="slide" data-time="0:30">
+  <div class="bg" style="background-image:url(assets/s8_kunlun.jpg);filter:brightness(.25)"></div>
+  <div class="seal">山</div><div class="crit">故事<i>The story</i></div>
+  <div class="center" style="justify-content:flex-start;padding-top:150px">
+    <div class="zh h3">四个篇章</div><div class="en e2">Four beats</div>
+  </div>
+  <div class="strip">
+    <figure><img src="assets/miora_panel.jpg"><span class="n">壹</span><figcaption><b>翻开古书</b><span>Open the book</span></figcaption></figure>
+    <figure><img src="assets/s3_corner.jpg"><span class="n">贰</span><figcaption><b>青丘误判</b><span>A rushed judgment</span></figcaption></figure>
+    <figure><img src="assets/s5_rest.jpg"><span class="n">叁</span><figcaption><b>道歉与和解</b><span>Making it right</span></figcaption></figure>
+    <figure><img src="assets/s7_ride.jpg"><span class="n">肆</span><figcaption><b>昆仑之路</b><span>The road to Kunlun</span></figcaption></figure>
+  </div>
+  <aside class="note">
+    <p data-who="Mia" data-en="Our story in four beats. A student scans the Shan Hai Jing with Miora and enters the book. In Qingqiu he makes a rushed judgment about a nine-tailed fox. He gets a chance to make it right. And together they ride to Kunlun, where the real danger waits." data-zh="我们的故事分四个篇章：学生用 Miora 扫描《山海经》，走进书中；在青丘，他对九尾狐做出了草率的判断；他得到了弥补的机会；最后他们一起奔向昆仑，真正的危险在那里等着。"></p>
+    <p data-who="Evan" data-zh="翻开古书，青丘误判，道歉和解，昆仑之路。" data-en="Open the book, a rushed judgment, making it right, the road to Kunlun."></p>
+  </aside>
+</section>
+
+<!-- 5 game innovation: growing party + narrative branches -->
+<section class="slide" data-time="0:45">
+  <div class="bg" style="background-image:url(assets/s6_together.jpg);filter:brightness(.22)"></div>
+  <div class="seal">山</div><div class="crit">玩法创新<i>Game innovation</i></div>
+  <div class="center" style="justify-content:flex-start;padding-top:150px">
+    <div class="zh h3">同伴随故事成长，选择改变故事</div>
+    <div class="en e2">Your party grows with the story. Your choices change it.</div>
+  </div>
+  <div class="party">
+    <figure><img src="assets/bridge.jpg" style="object-position:30% 50%"><figcaption><b>你</b><span>You, alone</span></figcaption></figure>
+    <div class="arrow">+</div>
+    <figure><img src="assets/mm_happy.jpg" style="object-fit:contain;background:#fff"><figcaption><b>Miora</b><span>Our world: scan, translate, learn</span></figcaption></figure>
+    <div class="arrow">+</div>
+    <figure><img src="assets/s6_close.jpg"><figcaption><b>九尾狐</b><span>The book's world: guide and mount</span></figcaption></figure>
+    <div class="arrow">+</div>
+    <figure><img src="assets/mystery.jpg"><figcaption><b>？</b><span>Revealed later</span></figcaption></figure>
+  </div>
+  <div class="branch"><b>叙事分支</b> 玩家自己做决定，而不是被游戏流程牵着走 <span class="en">Narrative branches: the player decides, not dragged along a fixed path</span></div>
+  <aside class="note">
+    <p data-who="Mia" data-en="What makes our game different. First, the party grows with the story: you start alone, then Miora joins, then the nine-tailed fox, and later a mysterious fourth companion that we will reveal later." data-zh="我们的游戏有什么不同？第一，同伴随着故事成长：一开始只有你，然后 Miora 加入，再来是九尾狐，之后还有一位神秘的第四位同伴，稍后揭晓。"></p>
+    <p data-who="Evan" data-zh="第二，叙事分支。玩家不是被游戏流程牵着走，而是自己做决定，每一个选择都会改变故事和同伴的关系。" data-en="Second, narrative branches. The player is not dragged along a fixed path; they decide, and every choice changes the story and the bond with their companions."></p>
+  </aside>
+</section>
+
+<!-- 6 implied: tools open the book -->
+<section class="slide" data-time="0:20">
+  <div class="bg" style="background-image:url(assets/miora_panel.jpg)"></div><div class="shade left"></div>
+  <div class="seal">山</div><div class="crit">隐喻 一<i>Hidden meaning</i></div>
+  <div class="leftcol">
+    <div class="zh h2">书只是文字，<br>直到工具打开它</div>
+    <div class="en e2">A book is only words until a tool opens it.</div>
+    <div class="rule"></div>
+    <div class="quote">Miora 给出选项，人做选择。<span class="en">Miora offers. The human chooses.</span></div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="第一个隐喻：书只是文字，直到工具打开它。Miora给出三个选项：图片、视频、沉浸式体验。选择的是人，不是AI。" data-en="First hidden meaning: a book is only words until a tool opens it. Miora offers three options: images, video, or an immersive experience. The human chooses, not the AI."></p>
+    <p data-who="Mia" data-en="That rule, Miora offers and the human chooses, runs through the whole game." data-zh="“Miora 提供，人来选择”，这条规则贯穿整个游戏。"></p>
+  </aside>
+</section>
+
+<!-- 7 choice 1 -->
+<section class="slide" data-time="0:35">
+  <div class="bg" style="background-image:url(assets/s3_corner.jpg)"></div><div class="shade left"></div>
+  <div class="seal">山</div><div class="crit">人性 · 选择一<i>Humanity · Choice 1</i></div>
+  <div class="leftcol">
+    <div class="zh h2">勇敢，<br>但可能是错的</div>
+    <div class="en e2">Brave, but maybe wrong.</div>
+    <div class="choice">
+      <div class="btn">A 继续观察<small>Continue observing</small></div>
+      <div class="btn hot">B 立刻介入<small>Intervene now</small></div>
+    </div>
+    <div class="quote">"我的数据不足，要不要再观察一下？"<span class="en">"I do not have enough data. Observe a little longer?"</span></div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="第一个选择。玩家看到巨大的九尾狐把一个“人”逼到悬崖边，地上还有尸体。他很害怕，但还是冲出去攻击狐狸，因为他想救人。勇敢，但可能是错的：他只看到了一半的信息。" data-en="Choice one. The player sees the giant nine-tailed fox cornering a 'person' at the cliff, bodies on the ground. He is scared but runs out and strikes the fox, because he wants to save someone. Brave, but maybe wrong: he only saw half the information."></p>
+    <p data-who="Mia" data-en="Miora warned him: not enough data. He still decided. Miora informs, the human decides, and the human carries the result. And the truth: the 'person' was a monster in disguise, and the fox was protecting the village." data-zh="Miora 提醒过他：数据不足。但他还是做了决定。Miora 提供信息，人做决定，也由人承担后果。真相是：那个“人”其实是伪装的怪物，狐狸是在保护村子。"></p>
+  </aside>
+</section>
+
+<!-- 8 choice 2: typed apology, sincerity -->
+<section class="slide" data-time="0:45">
+  <div class="bg" style="background-image:url(assets/s5_rest.jpg)"></div><div class="shade left"></div>
+  <div class="seal">山</div><div class="crit">人性 · 选择二<i>Humanity · Choice 2</i></div>
+  <div class="leftcol">
+    <div class="zh h2">用你自己的话<br>说对不起</div>
+    <div class="en e2">Say sorry in your own words.</div>
+    <div class="typebox"><span class="cur">I'm sorry. I thought you were hurting that person. I was wrong.</span></div>
+    <div class="flow3">
+      <div class="fstep"><em>1</em>Miora 翻译成狐语<span class="en">Miora translates to the fox</span></div>
+      <div class="fstep"><em>2</em>AI 分析诚意<span class="en">AI reads the sincerity</span><div class="meter"><i style="width:86%"></i><b>86%</b></div></div>
+      <div class="fstep"><em>3</em>狐狸自己决定<span class="en">The fox decides: forgive, or walk away</span></div>
+    </div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="第二个选择，我们做了升级。玩家不是点按钮，而是用自己的话，亲手打出道歉。Miora把这句话翻译成狐狸的语言，AI再分析这句道歉有多真诚。" data-en="For choice two we went further. The player does not click a button: they type the apology in their own words. Miora translates it into the fox's language, and AI analyses how sincere it is."></p>
+    <p data-who="Mia" data-en="Then the fox decides. If the apology is sincere, it may forgive. If not, the fox can simply walk away. Forgiveness is never automatic; it is the fox's own choice." data-zh="然后由狐狸自己决定：道歉真诚，它可能原谅；不真诚，它可以转身离开。原谅从来不是自动的，而是狐狸自己的选择。"></p>
+  </aside>
+</section>
+
+<!-- 9 AI learns -->
+<section class="slide" data-time="0:40">
+  <div class="bg" style="background-image:url(assets/s6_close.jpg)"></div><div class="shade left"></div>
+  <div class="seal">山</div><div class="crit">AI 的角色<i>The role of AI</i></div>
+  <div class="leftcol">
+    <div class="quote" style="font-size:46px;margin-top:0">"我想，狐狸已经原谅你了。"<span class="en" style="font-size:36px">"I think the fox has forgiven you."</span></div>
+    <div class="rule"></div>
+    <div class="zh h3">AI 会学习，也会连接我们</div>
+    <div class="en e2">AI learns, and it connects us.</div>
+    <div class="fnlist">
+      <div><b>S1</b> 分析古书，提供图片 / 视频 / 沉浸体验 <span class="en">Analyse the text, offer images, video or immersion</span></div>
+      <div><b>S2</b> 识别地点，与古籍对比，坦白数据不足 <span class="en">Identify the place, compare with the book, admit missing data</span></div>
+      <div><b>S3</b> 只建议，不替你决定 <span class="en">Advise without deciding</span></div>
+      <div><b>S4</b> 重新分析，纠正自己，写入日志 <span class="en">Re-analyse, correct itself, log it</span></div>
+      <div><b>S6</b> 从声音与行为中学习狐语，并翻译 <span class="en">Learn the fox's language and translate</span></div>
+      <div><b>S7+</b> 路线扫描、航拍、威胁评估 <span class="en">Route scan, aerial camera, threat rating</span></div>
+    </div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="玩家道歉以后，Miora说：“我想，狐狸已经原谅你了。”因为Miora在这里一直在学习狐狸的语言，并为玩家翻译。AI不只是回答它已经知道的东西，它还会学习新的知识。" data-en="After the apology, Miora says: 'I think the fox has forgiven you.' Miora has been learning the fox's language here and translating for the player. AI does not only answer what it already knows, it learns new things."></p>
+    <p data-who="Mia" data-en="That is AI's role in our game: a bridge. AI can connect us even when we are different. Like the two of us on this stage: different countries, different languages, different faces. Even different worlds." data-zh="这就是 AI 在我们游戏里的角色：一座桥。即使我们不同，AI 也能把我们连接起来。就像台上的我们两个人：不同的国家、不同的语言、不同的面孔，甚至不同的世界。"></p>
+    <p data-who="Evan" data-zh="就像我们两个人。" data-en="Just like the two of us."></p>
+  </aside>
+</section>
+
+<!-- 10 companionship -->
+<section class="slide" data-time="0:25">
+  <div class="bg" style="background-image:url(assets/s6_together.jpg)"></div><div class="shade"></div>
+  <div class="seal">山</div><div class="crit">同行<i>Companionship</i></div>
+  <div class="bottom">
+    <div class="zh h2">不同的世界，也能成为朋友</div>
+    <div class="en e1">From different worlds, they still become friends.</div>
+    <div class="small">人的勇气 + Miora 的桥梁 <span class="en">· human courage + Miora as the bridge</span></div>
+  </div>
+  <aside class="note">
+    <p data-who="Mia" data-en="The fox is not just another companion. At first they do not trust each other; they are different, from different worlds. Through the player's courage, and with Miora as the bridge, they become friends." data-zh="狐狸不只是又一个同伴。一开始他们互不信任，彼此不同，来自不同的世界。因为玩家的勇气，也因为 Miora 这座桥，他们成为了朋友。"></p>
+    <p data-who="Evan" data-zh="不同的世界，也能成为朋友。" data-en="Different worlds can still become friends."></p>
+  </aside>
+</section>
+
+<!-- 12 working with Miora: teamwork + features -->
+<section class="slide" data-time="0:55">
+  <div class="bg" style="background-image:url(assets/creatures_out.jpg);filter:brightness(.18)"></div>
+  <div class="seal">山</div><div class="crit">Miora 协作<i>Working with Miora</i></div>
+  <div class="center" style="justify-content:flex-start;padding-top:140px">
+    <div class="zh h3">有了 Miora，创作更轻松</div>
+    <div class="en e2">With Miora, life is easier.</div>
+  </div>
+  <div class="two">
+    <div class="col">
+      <div class="colh">团队协作 <span class="en">Teamwork</span></div>
+      <div class="cell sm"><b>腾讯文档协作</b><span class="en">Tencent Docs, one shared space</span></div>
+      <div class="cell sm"><b>自动同步修改</b><span class="en">Changes sync automatically</span></div>
+      <div class="cell sm"><b>四个人同时创作</b><span class="en">Four people creating at once</span></div>
+      <div class="shots"><img src="assets/tdocs_1.jpg"><img src="assets/tdocs_2.jpg"></div>
+    </div>
+    <div class="col">
+      <div class="colh">Miora 功能 <span class="en">Miora features</span></div>
+      <div class="tags">
+        <span class="tag">3D 生成 <i>3D creation</i></span>
+        <span class="tag">局部修改 <i>Edit only the part you choose</i></span>
+        <span class="tag">全景模式 <i>Panoramic mode</i></span>
+        <span class="tag">场景技能 <i>Scene skills</i></span>
+        <span class="tag">一键抠图 <i>Remove background</i></span>
+        <span class="tag">自定义模式 <i>Custom modes</i></span>
+        <span class="tag">按任务选 AI 工具 <i>The right AI tool per task</i></span>
+        <span class="tag">首尾帧视频 <i>First + last frame video</i></span>
+      </div>
+      <div class="conn"><img src="assets/connector.jpg"><div><b>Miora × 腾讯文档</b><span class="en">Miora connects straight to our Tencent Docs: read and update the team's files from Miora</span></div></div>
+    </div>
+  </div>
+  <aside class="note">
+    <p data-who="Mia" data-en="How we worked. First, teamwork: our whole team worked in Tencent Docs, one shared space where changes sync automatically, so four people could create at the same time without losing anything. And Miora connects straight to Tencent Docs." data-zh="我们是怎么合作的？首先是团队协作：整个团队在腾讯文档里工作，修改自动同步，四个人可以同时创作，什么都不会丢。而且 Miora 可以直接连接腾讯文档。"></p>
+    <p data-who="Evan" data-zh="第二是Miora的功能：3D生成；只修改你选中的部分，不用整张重来；全景模式对游戏开发特别有用；还有场景技能、一键抠图、自定义模式，每个任务都有合适的AI工具。有了Miora，创作变得轻松多了。" data-en="Second, Miora's features: 3D creation; editing only the part you select instead of redoing everything; panoramic mode, which is very useful for game development; scene skills, background removal, custom modes, the right AI tool for each task. With Miora, creating all of this became so much easier."></p>
+  </aside>
+</section>
+
+<!-- 13 value + chapter 2 -->
+<section class="slide" data-time="0:45">
+  <div class="bg" style="background-image:url(assets/ch2_kunlun.jpg)"></div><div class="shade full" style="background:rgba(13,11,9,.55)"></div>
+  <div class="seal">山</div><div class="crit">应用价值 · 第二章<i>Value · Chapter 2</i></div>
+  <div class="center" style="justify-content:flex-start;padding-top:150px">
+    <div class="zh h3">下一章，我们将带来</div>
+    <div class="en e2">What is coming in our next chapter</div>
+  </div>
+  <div class="ch2">
+    <figure><video src="assets/ch2_ride.mp4" muted loop playsinline autoplay></video><figcaption><b>更复杂的地图</b><span>A bigger, harder map: the road to Kunlun</span></figcaption></figure>
+    <figure><img src="assets/mystery.jpg"><figcaption><b>新同伴加入</b><span>A new teammate joins: ?</span></figcaption></figure>
+    <figure><video src="assets/ch2_wade.mp4" muted loop playsinline autoplay></video><figcaption><b>更多视觉与 UI 技术</b><span>More visual and UI craft for players</span></figcaption></figure>
+  </div>
+  <div class="branch" style="bottom:70px"><b>价值</b> 教育 · 博物馆与文旅 · 任何一本书都能变成一个世界 <span class="en">Education · museums and cultural tourism · any book can become a world</span></div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="在下一章，我们将来到昆仑：地图更大、更复杂；会有一位新同伴加入，现在先保密；画面和UI也会有更多技术细节。" data-en="In our next chapter we go to Kunlun: a bigger, more complex map; a new teammate joins, still a secret for now; and more visual and UI craft for the players."></p>
+    <p data-who="Mia" data-en="And the value goes beyond one game: students walk into the classics instead of memorising them, museums and cultural tourism can open one mountain per chapter, and with Miora any book can become a world." data-zh="价值也不止一个游戏：学生可以走进经典而不是背诵经典；博物馆和文旅可以一座山一章；有了 Miora，任何一本书都能变成一个世界。"></p>
+  </aside>
+</section>
+
+<!-- 14 ending -->
+<section class="slide" data-time="0:20">
+  <div class="bg" style="background-image:url(assets/s10_xiangliu.jpg)"></div><div class="shade"></div>
+  <div class="seal">山</div>
+  <div class="bottom">
+    <div class="zh h2">现在，请看我们的作品</div>
+    <div class="en e1">Now, please watch our film.</div>
+    <div class="rule"></div>
+    <div class="zh h3" style="font-weight:700">谢谢！</div>
+    <div class="en e2">Technology opens the book. Empathy walks the mountains.</div>
+  </div>
+  <aside class="note">
+    <p data-who="Evan" data-zh="科技翻开古书，共情走进山海。谢谢大家！现在，请看我们的作品。" data-en="Technology opens the book, empathy walks the mountains. Thank you! Now, please watch our film."></p>
+    <p data-who="Mia" data-en="Technology opens the book. Empathy walks the mountains. Thank you!" data-zh="科技翻开古书，共情走进山海。谢谢！"></p>
+  </aside>
+</section>
+
+</div>
+<div id="notes"></div>
+<div id="hud"></div>
+<div class="navhint">← → / space · N notes · F fullscreen · T timer reset</div>
+<script>
+const S=[...document.querySelectorAll('.slide')], stage=document.getElementById('stage'), hud=document.getElementById('hud'), notes=document.getElementById('notes');
+let i=0, t0=Date.now();
+try{ i=Math.min(S.length-1, parseInt(localStorage.getItem('shan_slide')||'0',10)||0) }catch(e){}
+function fit(){ const s=Math.min(innerWidth/1920, innerHeight/1080); stage.style.transform='translate(-50%,-50%) scale('+s+')' }
+function show(n){
+  i=Math.max(0,Math.min(S.length-1,n));
+  S.forEach((s,k)=>{ s.classList.toggle('on',k===i); s.querySelectorAll('video').forEach(v=>{ if(k===i){ v.currentTime=0; v.play().catch(()=>{}) } else v.pause() }) });
+  const s=S[i];
+  notes.innerHTML='<span class="t">'+(i+1)+' / '+S.length+' · '+s.dataset.time+'</span>'+[...s.querySelectorAll('.note p')].map(p=>{
+    const first=p.dataset.who==='Evan'?p.dataset.zh:p.dataset.en, second=p.dataset.who==='Evan'?p.dataset.en:p.dataset.zh;
+    return '<div class="part"><span class="who">'+p.dataset.who+(p.dataset.who==='Evan'?' · 中文':' · English')+'</span><p>'+first+'</p><p class="gloss">'+second+'</p></div>' }).join('');
+  try{ localStorage.setItem('shan_slide',i) }catch(e){}
+  tick();
+}
+function tick(){ const e=Math.floor((Date.now()-t0)/1000); hud.textContent=(i+1)+' / '+S.length+'   '+Math.floor(e/60)+':'+String(e%60).padStart(2,'0')+' / 8:00' }
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){ e.preventDefault(); show(i+1) }
+  else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){ e.preventDefault(); show(i-1) }
+  else if(e.key==='n'||e.key==='N') notes.classList.toggle('on');
+  else if(e.key==='f'||e.key==='F'){ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen() }
+  else if(e.key==='t'||e.key==='T'){ t0=Date.now(); tick() }
+  else if(e.key==='Home') show(0); else if(e.key==='End') show(S.length-1);
+});
+stage.addEventListener('click',()=>show(i+1));
+addEventListener('resize',fit); setInterval(tick,1000); fit(); show(i);
+</script>
+</body>
+</html>
