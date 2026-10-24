@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>山海莫怪 · Film</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap">
+<style>
+  :root { --bg:#0e0d0b; --ink:#efe6d2; --muted:#a89c84; --gold:#c9a45c; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--bg); color:var(--ink); min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 16px; font-family:"Cormorant Garamond",Georgia,serif; }
+  h1 { font-family:"Noto Serif SC","STKaiti","KaiTi",serif; font-size:clamp(32px,6vw,56px); letter-spacing:.12em; }
+  .sub { color:var(--muted); font-style:italic; font-size:clamp(16px,2.4vw,22px); margin:6px 0 24px; text-align:center; }
+  video { width:100%; max-width:1100px; aspect-ratio:16/9; background:#000; border:1px solid #3a3326; border-radius:6px; box-shadow:0 20px 60px rgba(0,0,0,.6); }
+  nav { margin-top:22px; display:flex; gap:22px; flex-wrap:wrap; justify-content:center; }
+  a { color:var(--gold); text-decoration:none; font-size:18px; border-bottom:1px solid transparent; }
+  a:hover { border-color:var(--gold); }
+  footer { margin-top:28px; color:var(--muted); font-size:15px; text-align:center; }
+</style>
+</head>
+<body>
+  <h1>山海莫怪</h1>
+  <p class="sub">Shan Hai Mo Guai · Culture comes alive in the age of AI</p>
+  <video src="assets/shanhai_film.mp4" poster="assets/valley.jpg" controls playsinline preload="metadata"></video>
+  <nav>
+    <a href="index.html">Pitch deck</a>
+    <a href="script.html">Script 中文 / English</a>
+    <a href="assets/shanhai_film.mp4" download>Download film</a>
+  </nav>
+  <footer>Team A-7 山 · TCAMP Build 48H × Miora</footer>
+</body>
+</html>
